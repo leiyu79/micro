@@ -1,0 +1,114 @@
+info:
+  app:
+    profiles: dev
+    name: gateway
+    description: gateway
+spring:
+  application:
+    name: gateway
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+      enabled: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  mvc:
+    view:
+      suffix: .html
+# 消息总线
+  rabbitmq:
+    host: localhost
+    port: 5672
+# 向服务监控调用中心暴露端口
+#  zipkin:
+#    base-url: http://www.zipkin.com:10020
+# 设置服务调用依赖检测的抽样率，默认为0.1.设置成1表示百分百抽样。方便开发调试
+  sleuth:
+    sampler:
+      percentage: 1
+  profiles:
+    active: dev
+server:
+  port: 10006
+  tomcat:
+      uri-encoding: utf-8
+feign:
+  hystrix:
+    enabled: true #开启监控熔断
+# 健康检查的相关配置
+management:
+  health:
+    mail:
+      enabled: false
+    redis:
+      enabled: false
+  security:
+    enabled: false #springbooot1.5.*以后如果要使用refresh功能的要设置false
+  port: 10007
+# 服务服务网关的配置,静态资源的映射，以及微服务的映射以及隐藏
+zuul:
+# 为请求设置host头信息,避免视图页面跳转到内部服务器的host上
+  addHostHeader: true
+# 限流配置
+  ratelimit:
+    enabled: true
+    repository: REDIS
+    key-prefix: zuulRatelimit
+    behind-proxy: true
+#    默认限流配置
+    default-policy-list:
+      - limit: 20
+        refresh-interval: 60
+        type:
+          - user
+          - origin
+      - limit: 50000
+        refresh-interval: 60
+        type:
+          - url
+#     指定服务限流配置
+    policy-list:
+      - oauth:
+        - limit: 10
+          refresh-interval: 60
+          type:
+            - user
+            - origin
+        - limit: 50000
+          refresh-interval: 60
+          type:
+            - url
+  routes:
+    upms:
+      path: /upms/**
+      serviceId: upms
+    ucenter:
+      path: /ucenter/**
+      serviceId: ucenter
+    oauth:
+#    保留请求头
+      sensitive-headers:
+      custom-sensitive-headers: true
+      path: /oauth/**
+      serviceId: oauth
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api/api-doc
+# 日志配置
+logging:
+  config: classpath:log4j2-dev.xml
+## 超时时间，方便调试
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 60000

@@ -1,0 +1,119 @@
+info:
+  app:
+    profiles: dev
+    name: ucenter
+    description: ucenter
+spring:
+  application:
+    name: ucenter
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+      enabled: true
+# 消息总线
+  rabbitmq:
+    host: localhost
+    port: 5672
+# 向服务监控调用中心暴露端口
+#  zipkin:
+#    base-url: http://www.zipkin.com:10020
+# 设置服务调用依赖检测的抽样率，默认为0.1.设置成1表示百分百抽样。方便开发调试
+  sleuth:
+    sampler:
+      percentage: 1
+  mvc:
+    view:
+      suffix: .html
+  profiles:
+    active: dev
+  datasource:
+    druid:
+      username: root
+      password: oracle
+      url: jdbc:mysql://127.0.0.1:3306/micro?useUncoide=true&chracterEncoding=utf-8&useSSL=false
+      sql-path: sql/ucenter.sql
+      master:
+        initial-size: 19
+        username: root
+        password: oracle
+        url: jdbc:mysql://127.0.0.1:3306/micro?useUncoide=true&chracterEncoding=utf-8&useSSL=false
+        sql-path: sql/ucenter.sql
+        driver-class-name: com.mysql.jdbc.Driver
+      #数据源共用基本配置
+      driver-class-name: com.mysql.jdbc.Driver
+      initial-size: 20
+      max-active: 50
+      min-idle: 10
+      max-wait: 1000
+      pool-prepared-statements: true
+      test-on-borrow: true
+      test-while-idle: true
+      time-between-log-stats-millis: 10000
+      min-evictable-idle-time-millis: 100000
+      max-evictable-idle-time-millis: 200000
+      default-auto-commit: true
+      filters: stat,wall
+      #url监控配置
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: /static/*,/druid/*
+        session-stat-enable: false
+      stat-view-servlet:
+        login-username: micro
+        login-password: fast
+        reset-enable: true
+        allow: 127.0.0.1,172.17.0.1
+        deny: 127.0.0.2
+        enabled: true
+        url-pattern: /druid/*
+      #aop拦截监控
+      aop-patterns: com.micro.*
+      #statFilter配置
+      filter:
+        stat:
+          connection-stack-trace-enable: true
+          db-type: mysql
+          enabled: true
+          log-slow-sql: true
+          merge-sql: true
+          slow-sql-millis: 2000
+  aop:
+    proxy-target-class: true
+server:
+  port: 10010
+  tomcat:
+      uri-encoding: utf-8
+feign:
+  hystrix:
+    enabled: true #开启监控熔断
+# 健康检查的相关配置
+management:
+  health:
+    mail:
+      enabled: true
+    redis:
+      enabled: true
+  security:
+    enabled: false #springbooot1.5.*以后如果要使用refresh功能的要设置false
+  port: 10011
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api/api-doc
+# 日志配置
+logging:
+  config: classpath:log4j2-dev.xml
+#　--------------------------
+#  自定义的配置参数
+#  --------------------------
+mybatis:
+  typeAliasesPackage: com.micro.fast.ucenter.pojo
+  mappers: classpath:/mappers/*.xml
+  pageHelperProperties:
+    - dialect:mysql
+#　--------------------------
+#  /自定义的配置参数
+#  --------------------------

@@ -1,0 +1,58 @@
+info:
+  app:
+    profiles: dev
+    name: monitor-turbine
+    description: monitor-turbine
+spring:
+  boot:
+#  springboot-admin-server的配置
+    admin:
+      context-path: /admin
+      routes:
+        endpoints: env,metrics,trace,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream
+#   springboot-admin-server-turbine监控的配置
+      turbine:
+        clusters: ms-upms,ms-oauth,ms-gateway,ms-ucenter
+        location: monitor-turbine
+  application:
+    name: monitor-turbine
+# 消息总线
+  rabbitmq:
+    host: localhost
+    port: 5672
+security:
+  basic:
+    enabled: false
+turbine:
+  aggregator:
+    # 指定聚合哪些集群，多个使用","分割，默认为default。可使用http://.../turbine.stream?cluster={clusterConfig之一}访问
+    cluster-config: ms-upms,ms-oauth,ms-gateway,ms-ucenter
+  # 配置Eureka中的serviceId列表，表明监控哪些服务
+  app-config: upms,oauth,gateway,ucenter
+  cluster-name-expression: metadata['cluster']
+# 1. clusterNameExpression指定集群名称，默认表达式appName；此时：turbine.aggregator.clusterConfig需要配置想要监控的应用名称
+# 2. 当clusterNameExpression: default时，turbine.aggregator.clusterConfig可以不写，因为默认就是default
+# 3. 当clusterNameExpression: metadata['cluster']时，假设想要监控的应用配置了eureka.instance.metadata-map.cluster: ABC，则
+# 需要配置，同时turbine.aggregator.clusterConfig: ABC
+# 日志配置
+logging:
+  config: classpath:log4j2-dev.xml
+server:
+  port: 10018
+  tomcat:
+      uri-encoding: utf-8
+feign:
+  hystrix:
+    enabled: true #开启监控熔断
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api/api-doc
+# 健康检查的相关配置
+management:
+  health:
+    diskspace:
+      enabled: true
+  security:
+    enabled: false

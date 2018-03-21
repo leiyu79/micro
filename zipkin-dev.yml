@@ -1,0 +1,34 @@
+info:
+  app:
+    profiles: dev
+    name: monitor-zipkin
+    description: monitor-zipkin
+spring:
+  application:
+    name: monitor-zipkin
+# 消息总线
+  rabbitmq:
+    host: localhost
+    port: 5672
+security:
+  basic:
+    enabled: false
+# 日志配置
+logging:
+  config: classpath:log4j2-dev.xml
+server:
+  port: 10020
+  tomcat:
+      uri-encoding: utf-8
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api/api-doc
+# 健康检查的相关配置
+management:
+  health:
+    diskspace:
+      enabled: true
+  security:
+    enabled: false

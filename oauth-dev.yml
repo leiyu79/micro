@@ -1,0 +1,70 @@
+info:
+  app:
+    profiles: dev
+    name: oauth
+    description: oauth
+spring:
+  application:
+    name: oauth
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+      enabled: true
+  datasource:
+    username: root
+    password: oracle
+    url: jdbc:mysql://127.0.0.1:3306/micro?useUnicode=true&characterEncoding=utf8&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    schema: classpath:sql/Oauth2Client.sql
+  profiles:
+    active: dev
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  aop:
+    proxy-target-class: true
+# 消息总线
+  rabbitmq:
+    host: localhost
+    port: 5672
+# 向服务监控调用中心暴露端口
+#  zipkin:
+#    base-url: http://www.zipkin.com:10020
+# 设置服务调用依赖检测的抽样率，默认为0.1.设置成1表示百分百抽样。方便开发调试
+  sleuth:
+    sampler:
+      percentage: 1
+server:
+  port: 10012
+  tomcat:
+      uri-encoding: utf-8
+feign:
+  hystrix:
+    enabled: true #开启监控熔断
+# 健康检查的相关配置
+management:
+  health:
+    mail:
+      enabled: false
+    redis:
+      enabled: true
+  security:
+    enabled: false #springbooot1.5.*以后如果要使用refresh功能的要设置false
+  port: 10013
+# 日志配置
+logging:
+  config: classpath:log4j2-dev.xml
+# boot-satrter-security-oauth模块自定义的配置
+ms:
+  security:
+    code:
+      image:
+        width: 67
+        height: 23
+        length: 4
+        expireIn: 300
+    oauth2:
+      clients[0]:
+        clientId: ms
+        clientSecret: ms
