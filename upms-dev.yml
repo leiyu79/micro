@@ -16,7 +16,7 @@ spring:
       suffix: .html
 # 消息总线
   rabbitmq:
-    host: localhost
+    host: 193.168.5.5
     port: 5672
 # 向服务监控调用中心暴露端口
 #  zipkin:
