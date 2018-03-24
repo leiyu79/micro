@@ -12,7 +12,7 @@ spring:
       max-request-size: 20MB
       enabled: true
   redis:
-    host: 127.0.0.1
+    host: 193.168.5.5
     port: 6379
   mvc:
     view:

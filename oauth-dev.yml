@@ -20,7 +20,7 @@ spring:
   profiles:
     active: dev
   redis:
-    host: 127.0.0.1
+    host: 193.168.5.5
     port: 6379
   aop:
     proxy-target-class: true
