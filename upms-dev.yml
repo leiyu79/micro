@@ -18,6 +18,8 @@ spring:
   rabbitmq:
     host: 193.168.5.5
     port: 5672
+    username: root
+    password: oracle
 # 向服务监控调用中心暴露端口
 #  zipkin:
 #    base-url: http://www.zipkin.com:10020
