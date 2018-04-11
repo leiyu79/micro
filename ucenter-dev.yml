@@ -113,7 +113,7 @@ logging:
 #  --------------------------
 mybatis:
   typeAliasesPackage: com.micro.fast.ucenter.pojo
-  mappers: classpath:/mappers/*.xml
+  mappers: classpath:/mapper/*.xml
   pageHelperProperties:
     - dialect:mysql
 #　--------------------------
