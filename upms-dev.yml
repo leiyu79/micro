@@ -113,9 +113,11 @@ logging:
 #  --------------------------
 mybatis:
   typeAliasesPackage: com.micro.fast.upms.pojo
-  mappers: classpath:/mappers/*.xml
+  mappers: classpath:com/micro/fast/upms/mapper/*.xml
   pageHelperProperties:
     - dialect:mysql
+
+
 #　--------------------------
 #  /自定义的配置参数
 #  --------------------------
