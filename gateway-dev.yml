@@ -89,9 +89,6 @@ zuul:
     ucenter:
       path: /ucenter/**
       serviceId: ucenter
-    eureka-server:
-      path: /eureka-server/**
-      serviceId: eureka-server      
     oauth:
 #    保留请求头
       sensitive-headers:
