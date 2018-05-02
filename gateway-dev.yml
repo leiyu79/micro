@@ -89,7 +89,7 @@ zuul:
     ucenter:
       path: /ucenter/**
       serviceId: ucenter
-    ucenter:
+    eureka-server:
       path: /eureka-server/**
       serviceId: eureka-server      
     oauth:
