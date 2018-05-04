@@ -114,3 +114,8 @@ hystrix:
 ribbon:
   ConnectTimeout: 3000
   ReadTimeout: 60000
+  # 不需要登录校验的地址
+login:
+  notNeedLoginCheckPath:
+   - /oauth/user/login
+   - /oauth/code/**
